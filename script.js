@@ -482,17 +482,29 @@
         "Use a discovery conversation to estimate complexity and compare phased options before setting a budget.";
     }
 
-    if (state.stage === "idea") {
-      steps[1] =
-        "Validate the core assumption with a small proof of value before committing to a larger build.";
-    }
+    
+if (state.stage === "idea") {
+  steps[1] =
+    "Validate the core assumption with a small proof of value before committing to a larger build.";
+}
 
-    if (state.stage === "enterprise") {
-      steps[1] =
-        "Include stakeholders, existing systems, security requirements, and change management in discovery.";
-    }
+if (state.stage === "early") {
+  steps[1] =
+    "Prioritize the highest-impact need, confirm available resources, and validate the first solution with a small group of users.";
+}
 
-    return steps;
+if (state.stage === "established") {
+  steps[1] =
+    "Review existing workflows, tools, and performance data to identify the improvement with the clearest business value.";
+}
+
+if (state.stage === "enterprise") {
+  steps[1] =
+    "Include stakeholders, existing systems, security requirements, and change management in discovery.";
+}
+
+return steps;
+
   }
 
   function makeBrief() {
@@ -592,22 +604,22 @@
           Copy project brief ↗
         </button>
 
-        <a
-          class="secondary-button"
-          style="display:inline-flex;align-items:center;text-decoration:none"
-          href="${service.url}"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Explore service details ↗
-        </a>
+      
+      <a
+        class="secondary-button"
+        style="display:inline-flex;align-items:center;text-decoration:none"
+        href="${makeContactUrl()}"
+      >
+        Email project brief ↗
+
+      </a>
+
 
         <a
           class="secondary-button"
           style="display:inline-flex;align-items:center;text-decoration:none"
           href="${makeContactUrl()}"
-          target="_blank"
-          rel="noopener noreferrer"
+
         >
           Email project brief ↗
         </a>
@@ -637,17 +649,17 @@
     `;
   }
 
-  function makeContactUrl() {
-    const goal = goalById(state.goal);
 
-    const subject = encodeURIComponent(
-      "Project discovery — " + (goal?.title || "Cynbit Solution Finder")
-    );
+function makeContactUrl() {
+  const goal = goalById(state.goal);
+  const subject = "Project discovery — " +
+    (goal?.title || "Cynbit Solution Finder");
 
-    const body = encodeURIComponent(makeBrief());
+  const body = makeBrief();
 
-    return `mailto:opportunities@cynbit.in?subject=${subject}&body=${body}`;
-  }
+  return `https://mail.google.com/mail/?view=cm&fs=1&to=opportunities@cynbit.in&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
 
   function render() {
     const focusTarget =
@@ -780,6 +792,16 @@
             "Copy was blocked by this browser. Open the brief preview below and copy the text manually.";
         }
       }
+    }
+  });
+
+  finder.addEventListener("change", (event) => {
+    if (event.target.id === "stage") {
+      state.stage = event.target.value;
+    }
+
+    if (event.target.id === "investment") {
+      state.investment = event.target.value;
     }
   });
 
